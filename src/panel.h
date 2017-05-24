@@ -15,12 +15,12 @@
 
 namespace Budgie
 {
-/**
- * Panel is a top level window on screen used as a panel like object
- */
-class Panel : public QWindow
-{
-    public:
-    Panel();
-};
+    /**
+     * Panel is a top level window on screen used as a panel like object
+     */
+    class Panel : public QWindow
+    {
+        public:
+        Panel();
+    };
 }

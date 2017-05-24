@@ -14,11 +14,11 @@
 
 namespace Budgie
 {
-/**
- * Main constructor for a Budgie::Panel
- */
-Budgie::Panel::Panel()
-{
-    qDebug() << "I am a panel";
-}
+    /**
+     * Main constructor for a Budgie::Panel
+     */
+    Panel::Panel()
+    {
+        qDebug() << "I am a panel";
+    }
 }
