@@ -17,6 +17,7 @@ executable(
     'b11-panel',
     [
         'src/b11-panel.cpp',
+        'src/panel.cpp',
     ],
     dependencies: [
         dep_qtwidgets,

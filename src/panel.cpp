@@ -10,12 +10,15 @@
  */
 
 #include "panel.h"
-#include <QApplication>
+#include <QDebug>
 
-int main(int argc, char *argv[])
+namespace Budgie
 {
-    QApplication app(argc, argv);
-    Budgie::Panel panel;
-    panel.show();
-    return app.exec();
+/**
+ * Main constructor for a Budgie::Panel
+ */
+Budgie::Panel::Panel()
+{
+    qDebug() << "I am a panel";
+}
 }

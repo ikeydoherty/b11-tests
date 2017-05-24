@@ -9,13 +9,18 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include "panel.h"
-#include <QApplication>
+#pragma once
 
-int main(int argc, char *argv[])
+#include <QWindow>
+
+namespace Budgie
 {
-    QApplication app(argc, argv);
-    Budgie::Panel panel;
-    panel.show();
-    return app.exec();
+/**
+ * Panel is a top level window on screen used as a panel like object
+ */
+class Panel : public QWindow
+{
+    public:
+    Panel();
+};
 }
