@@ -6,7 +6,7 @@ project(
         'LGPL-2.1',
     ],
     default_options: [
-        'c_std=c++11',
+        'c_std=c++14',
     ],
 )
 
