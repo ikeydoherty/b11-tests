@@ -74,7 +74,6 @@ namespace Budgie
         }
 
         auto button = new TaskButton(info);
-        qDebug() << "New window: " << info.name();
         buttons.insert(id, button);
         this->buttonLayout->addWidget(button);
         button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
@@ -88,7 +87,6 @@ namespace Budgie
             qDebug() << "Removed unknown window " << id;
             return;
         }
-        qDebug() << "Removed window " << button->text();
         delete button;
     }
 
@@ -103,8 +101,6 @@ namespace Budgie
         if (changedProperties == 0) {
             return;
         }
-
-        qDebug() << "Window changed: " << id;
 
         KWindowInfo info(id, changedProperties, ignored);
         if (!info.valid()) {
