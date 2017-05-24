@@ -21,5 +21,7 @@ namespace Budgie
     void TaskButton::updateFromWindow(KWindowInfo &window)
     {
         this->setText(window.name());
+        auto icon = KWindowSystem::icon(window.win());
+        this->setIcon(QIcon(icon));
     }
 }

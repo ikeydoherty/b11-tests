@@ -33,8 +33,10 @@ namespace Budgie
         if (buttons.contains(id)) {
             return;
         }
-        static auto basicQueryMask = NET::WMName | NET::WMWindowType;
-        KWindowInfo info(id, basicQueryMask);
+        static auto basicQueryMask =
+            NET::WMName | NET::WMWindowType | NET::WMIcon | NET::WMIconName | NET::WMDesktop;
+        static auto basicQueryMaskV2 = NET::WM2DesktopFileName;
+        KWindowInfo info(id, basicQueryMask, basicQueryMaskV2);
         if (!info.valid()) {
             qDebug() << "Invalid window: " << id;
             return;
