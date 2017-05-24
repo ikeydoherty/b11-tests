@@ -20,6 +20,8 @@ namespace Budgie
      */
     class Panel : public QWindow
     {
+        Q_OBJECT
+
         public:
         Panel();
     };
