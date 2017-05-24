@@ -24,5 +24,9 @@ namespace Budgie
 
     public:
         Panel();
+
+    public slots:
+        void windowAdded(WId id);
+        void windowRemoved(WId id);
     };
 }

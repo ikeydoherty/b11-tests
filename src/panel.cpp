@@ -10,6 +10,7 @@
  */
 
 #include "panel.h"
+#include <KWindowSystem>
 #include <QDebug>
 
 namespace Budgie
@@ -20,5 +21,17 @@ namespace Budgie
     Panel::Panel()
     {
         qDebug() << "I am a panel";
+        connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &Panel::windowAdded);
+        connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &Panel::windowRemoved);
+    }
+
+    void Panel::windowAdded(WId id)
+    {
+        qDebug() << "New window: " << id;
+    }
+
+    void Panel::windowRemoved(WId id)
+    {
+        qDebug() << "Removed window: " << id;
     }
 }
