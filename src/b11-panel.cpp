@@ -1,7 +1,7 @@
 /*
  * This file is part of b11-tests
  *
- * Copyright © 2015-2017 Ikey Doherty <ikey@solus-project.com>
+ * Copyright © 2017 Ikey Doherty <ikey@solus-project.com>
  *
  * b11-tests is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
