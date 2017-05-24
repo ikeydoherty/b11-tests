@@ -31,7 +31,8 @@ namespace Budgie
 
     private:
         QMap<WId, TaskButton *> buttons;
-        QHBoxLayout *layout;
+        QHBoxLayout *buttonLayout;
+        void setupChild();
 
     public slots:
         void windowAdded(WId id);

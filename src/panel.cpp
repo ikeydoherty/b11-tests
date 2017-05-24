@@ -20,9 +20,33 @@ namespace Budgie
     Panel::Panel()
     {
         qDebug() << "I am a panel";
-        this->layout = new QHBoxLayout(this);
+
+        auto layout = new QHBoxLayout;
+        this->setLayout(layout);
+        layout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+
+        // Force main panel size
+        // setFixedSize(400, 50);
+        layout->setMargin(0);
+
+        setupChild();
+
+        // Hook up signals
         connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &Panel::windowAdded);
         connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &Panel::windowRemoved);
+    }
+
+    void Panel::setupChild()
+    {
+        auto child = new QWidget;
+        child->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+
+        this->layout()->addWidget(child);
+        child->show();
+        this->buttonLayout = new QHBoxLayout;
+        this->buttonLayout->setMargin(0);
+        this->buttonLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
+        child->setLayout(this->buttonLayout);
     }
 
     /**
@@ -43,9 +67,10 @@ namespace Budgie
         }
 
         auto button = new TaskButton(info);
-        this->layout->addWidget(button);
         qDebug() << "New window: " << info.name();
         buttons.insert(id, button);
+        this->buttonLayout->addWidget(button);
+        button->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
         button->show();
     }
 
