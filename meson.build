@@ -38,6 +38,7 @@ endforeach
 panel_mocs = qt5.preprocess(
     moc_headers: [
         'src/panel.h',
+        'src/taskbutton.h',
     ],
 )
 
@@ -46,6 +47,7 @@ executable(
     [
         'src/b11-panel.cpp',
         'src/panel.cpp',
+        'src/taskbutton.cpp',
         panel_mocs,
     ],
     dependencies: [

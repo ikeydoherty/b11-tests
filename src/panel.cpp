@@ -20,6 +20,7 @@ namespace Budgie
     Panel::Panel()
     {
         qDebug() << "I am a panel";
+        this->layout = new QHBoxLayout(this);
         connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &Panel::windowAdded);
         connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &Panel::windowRemoved);
     }
@@ -29,30 +30,31 @@ namespace Budgie
      */
     void Panel::windowAdded(WId id)
     {
-        if (windows.contains(id)) {
+        if (buttons.contains(id)) {
             return;
         }
-
         static auto basicQueryMask = NET::WMName | NET::WMWindowType;
-        QScopedPointer<KWindowInfo> info(new KWindowInfo(id, basicQueryMask));
-
-        if (!info->valid()) {
+        KWindowInfo info(id, basicQueryMask);
+        if (!info.valid()) {
             qDebug() << "Invalid window: " << id;
             return;
         }
 
-        qDebug() << "New window: " << info->name();
-        windows.insert(id, info.take());
+        auto button = new TaskButton(info);
+        this->layout->addWidget(button);
+        qDebug() << "New window: " << info.name();
+        buttons.insert(id, button);
+        button->show();
     }
 
     void Panel::windowRemoved(WId id)
     {
-        KWindowInfo *info = windows.take(id);
-        if (!info) {
+        auto button = buttons.take(id);
+        if (!button) {
             qDebug() << "Removed unknown window " << id;
             return;
         }
-        qDebug() << "Removed window " << info->name();
-        delete info;
+        qDebug() << "Removed window " << button->text();
+        delete button;
     }
 }

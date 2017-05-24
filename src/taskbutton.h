@@ -11,30 +11,20 @@
 
 #pragma once
 
-#include "taskbutton.h"
 #include <KWindowSystem>
-#include <QHBoxLayout>
-#include <QMap>
-#include <QWindow>
+#include <QPushButton>
 
 namespace Budgie
 {
     /**
      * Panel is a top level window on screen used as a panel like object
      */
-    class Panel : public QWidget
+    class TaskButton : public QPushButton
     {
         Q_OBJECT
 
     public:
-        Panel();
-
-    private:
-        QMap<WId, TaskButton *> buttons;
-        QHBoxLayout *layout;
-
-    public slots:
-        void windowAdded(WId id);
-        void windowRemoved(WId id);
+        explicit TaskButton(KWindowInfo &window);
+        void updateFromWindow(KWindowInfo &window);
     };
 }
