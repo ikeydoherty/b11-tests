@@ -11,6 +11,8 @@
 
 #pragma once
 
+#include <KWindowSystem>
+#include <QMap>
 #include <QWindow>
 
 namespace Budgie
@@ -24,6 +26,9 @@ namespace Budgie
 
     public:
         Panel();
+
+    private:
+        QScopedPointer<QMap<WId, KWindowInfo *>> windows;
 
     public slots:
         void windowAdded(WId id);

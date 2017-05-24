@@ -10,7 +10,6 @@
  */
 
 #include "panel.h"
-#include <KWindowSystem>
 #include <QDebug>
 
 namespace Budgie
@@ -21,17 +20,40 @@ namespace Budgie
     Panel::Panel()
     {
         qDebug() << "I am a panel";
+        this->windows.reset(new QMap<WId, KWindowInfo *>);
         connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &Panel::windowAdded);
         connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &Panel::windowRemoved);
     }
 
+    /**
+     * A window got added to the screen. Go poke it.
+     */
     void Panel::windowAdded(WId id)
     {
-        qDebug() << "New window: " << id;
+        static auto basicQueryMask = NET::WMName | NET::WMWindowType;
+        QScopedPointer<KWindowInfo> info(new KWindowInfo(id, basicQueryMask));
+
+        if (!info->valid()) {
+            qDebug() << "Invalid window: " << id;
+            return;
+        }
+
+        if (windows->contains(id)) {
+            return;
+        }
+
+        qDebug() << "New window: " << info->name();
+        windows->insert(id, info.take());
     }
 
     void Panel::windowRemoved(WId id)
     {
-        qDebug() << "Removed window: " << id;
+        KWindowInfo *info = this->windows->take(id);
+        if (!info) {
+            qDebug() << "Removed unknown window " << id;
+            return;
+        }
+        qDebug() << "Removed window " << info->name();
+        delete info;
     }
 }
