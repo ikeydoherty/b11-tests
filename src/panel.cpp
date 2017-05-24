@@ -30,15 +30,15 @@ namespace Budgie
      */
     void Panel::windowAdded(WId id)
     {
+        if (windows->contains(id)) {
+            return;
+        }
+
         static auto basicQueryMask = NET::WMName | NET::WMWindowType;
         QScopedPointer<KWindowInfo> info(new KWindowInfo(id, basicQueryMask));
 
         if (!info->valid()) {
             qDebug() << "Invalid window: " << id;
-            return;
-        }
-
-        if (windows->contains(id)) {
             return;
         }
 
