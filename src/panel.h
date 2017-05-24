@@ -22,7 +22,7 @@ namespace Budgie
     {
         Q_OBJECT
 
-        public:
+    public:
         Panel();
     };
 }
