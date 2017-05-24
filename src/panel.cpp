@@ -34,6 +34,13 @@ namespace Budgie
         // Hook up signals
         connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &Panel::windowAdded);
         connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &Panel::windowRemoved);
+
+        // The ugliness of overloaded signals reveal themselves.
+        connect(KWindowSystem::self(),
+                static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(
+                    &KWindowSystem::windowChanged),
+                this,
+                &Panel::windowChanged);
     }
 
     void Panel::setupChild()
@@ -83,5 +90,28 @@ namespace Budgie
         }
         qDebug() << "Removed window " << button->text();
         delete button;
+    }
+
+    void Panel::windowChanged(WId id, NET::Properties changedProperties, NET::Properties2 ignored)
+    {
+        auto button = buttons.value(id, nullptr);
+        if (!button) {
+            qDebug() << "Unknown window changed: " << id;
+            return;
+        }
+
+        if (changedProperties == 0) {
+            return;
+        }
+
+        qDebug() << "Window changed: " << id;
+
+        KWindowInfo info(id, changedProperties, ignored);
+        if (!info.valid()) {
+            qDebug() << "Invalid window: " << id;
+            return;
+        }
+
+        button->updateFromWindow(info, changedProperties);
     }
 }

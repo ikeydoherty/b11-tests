@@ -25,6 +25,6 @@ namespace Budgie
 
     public:
         explicit TaskButton(KWindowInfo &window);
-        void updateFromWindow(KWindowInfo &window);
+        void updateFromWindow(KWindowInfo &window, unsigned int changedProperties = 0);
     };
 }

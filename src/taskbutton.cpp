@@ -18,10 +18,29 @@ namespace Budgie
         this->updateFromWindow(window);
     }
 
-    void TaskButton::updateFromWindow(KWindowInfo &window)
+    void TaskButton::updateFromWindow(KWindowInfo &window, unsigned int changedProperties)
     {
-        this->setText(window.name());
-        auto icon = KWindowSystem::icon(window.win());
-        this->setIcon(QIcon(icon));
+        bool setIcon = false;
+        bool setName = false;
+
+        if (changedProperties == 0) {
+            setIcon = true;
+            setName = true;
+        }
+
+        if (changedProperties & NET::WMIcon || changedProperties & NET::WMIconName) {
+            setIcon = true;
+        }
+        if (changedProperties & NET::WMName || changedProperties & NET::WMVisibleName) {
+            setName = true;
+        }
+
+        if (setName) {
+            this->setText(window.name());
+        }
+        if (setIcon) {
+            auto icon = KWindowSystem::icon(window.win());
+            this->setIcon(QIcon(icon));
+        }
     }
 }

@@ -37,5 +37,6 @@ namespace Budgie
     public slots:
         void windowAdded(WId id);
         void windowRemoved(WId id);
+        void windowChanged(WId id, NET::Properties changedProperties, NET::Properties2 ignored);
     };
 }
