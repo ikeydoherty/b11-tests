@@ -20,7 +20,6 @@ namespace Budgie
     Panel::Panel()
     {
         qDebug() << "I am a panel";
-        this->windows.reset(new QMap<WId, KWindowInfo *>);
         connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &Panel::windowAdded);
         connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &Panel::windowRemoved);
     }
@@ -30,7 +29,7 @@ namespace Budgie
      */
     void Panel::windowAdded(WId id)
     {
-        if (windows->contains(id)) {
+        if (windows.contains(id)) {
             return;
         }
 
@@ -43,12 +42,12 @@ namespace Budgie
         }
 
         qDebug() << "New window: " << info->name();
-        windows->insert(id, info.take());
+        windows.insert(id, info.take());
     }
 
     void Panel::windowRemoved(WId id)
     {
-        KWindowInfo *info = this->windows->take(id);
+        KWindowInfo *info = windows.take(id);
         if (!info) {
             qDebug() << "Removed unknown window " << id;
             return;

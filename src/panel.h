@@ -28,7 +28,7 @@ namespace Budgie
         Panel();
 
     private:
-        QScopedPointer<QMap<WId, KWindowInfo *>> windows;
+        QMap<WId, KWindowInfo *> windows;
 
     public slots:
         void windowAdded(WId id);
