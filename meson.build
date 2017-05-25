@@ -38,6 +38,7 @@ endforeach
 panel_mocs = qt5.preprocess(
     moc_headers: [
         'src/panel.h',
+        'src/panel_private.h',
         'src/taskbutton.h',
     ],
 )

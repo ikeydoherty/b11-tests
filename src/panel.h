@@ -11,17 +11,12 @@
 
 #pragma once
 
-#include "taskbutton.h"
-#include <KWindowSystem>
-#include <QHBoxLayout>
-#include <QMap>
-#include <QWindow>
+#include <QWidget>
 
 namespace Budgie
 {
-    /**
-     * Panel is a top level window on screen used as a panel like object
-     */
+    QT_FORWARD_DECLARE_CLASS(PanelPrivate)
+
     class Panel : public QWidget
     {
         Q_OBJECT
@@ -29,14 +24,10 @@ namespace Budgie
     public:
         explicit Panel();
 
-    private:
-        QMap<WId, TaskButton *> buttons;
-        QHBoxLayout *buttonLayout;
-        void setupChild();
+    protected:
+        Q_DECLARE_PRIVATE(Panel);
 
-    public slots:
-        void windowAdded(WId id);
-        void windowRemoved(WId id);
-        void windowChanged(WId id, NET::Properties changedProperties, NET::Properties2 ignored);
+    private:
+        PanelPrivate *const d_ptr;
     };
 }

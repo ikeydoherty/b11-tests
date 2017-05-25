@@ -9,16 +9,18 @@
  * version 2.1 of the License, or (at your option) any later version.
  */
 
-#include "panel.h"
+#include "panel_private.h"
 #include <QDebug>
 
 namespace Budgie
 {
     /**
-     * Main constructor for a Budgie::Panel
+     * Handle the main widget construction
      */
-    Panel::Panel()
+    Panel::Panel() : d_ptr(new PanelPrivate(this))
     {
+        Q_D(Panel);
+
         qDebug() << "I am a panel";
 
         auto layout = new QHBoxLayout;
@@ -29,26 +31,46 @@ namespace Budgie
         // setFixedSize(400, 50);
         layout->setMargin(0);
 
-        setupChild();
+        d->setupChild();
+        d->hookupSignals();
+    }
 
-        // Hook up signals
-        connect(KWindowSystem::self(), &KWindowSystem::windowAdded, this, &Panel::windowAdded);
-        connect(KWindowSystem::self(), &KWindowSystem::windowRemoved, this, &Panel::windowRemoved);
+    /**
+     * Just reference back to our panel
+     */
+    PanelPrivate::PanelPrivate(Panel *p) : q_ptr(p)
+    {
+    }
+
+    /**
+     * hook up signals to KWindowSystem
+     */
+    void PanelPrivate::hookupSignals()
+    {
+        connect(KWindowSystem::self(),
+                &KWindowSystem::windowAdded,
+                this,
+                &PanelPrivate::windowAdded);
+        connect(KWindowSystem::self(),
+                &KWindowSystem::windowRemoved,
+                this,
+                &PanelPrivate::windowRemoved);
 
         // The ugliness of overloaded signals reveal themselves.
         connect(KWindowSystem::self(),
                 static_cast<void (KWindowSystem::*)(WId, NET::Properties, NET::Properties2)>(
                     &KWindowSystem::windowChanged),
                 this,
-                &Panel::windowChanged);
+                &PanelPrivate::windowChanged);
     }
 
-    void Panel::setupChild()
+    void PanelPrivate::setupChild()
     {
+        Q_Q(Panel);
         auto child = new QWidget;
         child->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
 
-        this->layout()->addWidget(child);
+        q->layout()->addWidget(child);
         child->show();
         this->buttonLayout = new QHBoxLayout;
         this->buttonLayout->setMargin(0);
@@ -59,7 +81,7 @@ namespace Budgie
     /**
      * A window got added to the screen. Go poke it.
      */
-    void Panel::windowAdded(WId id)
+    void PanelPrivate::windowAdded(WId id)
     {
         if (buttons.contains(id)) {
             return;
@@ -80,7 +102,7 @@ namespace Budgie
         button->show();
     }
 
-    void Panel::windowRemoved(WId id)
+    void PanelPrivate::windowRemoved(WId id)
     {
         auto button = buttons.take(id);
         if (!button) {
@@ -90,7 +112,8 @@ namespace Budgie
         delete button;
     }
 
-    void Panel::windowChanged(WId id, NET::Properties changedProperties, NET::Properties2 ignored)
+    void PanelPrivate::windowChanged(WId id, NET::Properties changedProperties,
+                                     NET::Properties2 ignored)
     {
         auto button = buttons.value(id, nullptr);
         if (!button) {
