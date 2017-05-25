@@ -27,7 +27,7 @@ namespace Budgie
         Q_OBJECT
 
     public:
-        Panel();
+        explicit Panel();
 
     private:
         QMap<WId, TaskButton *> buttons;
