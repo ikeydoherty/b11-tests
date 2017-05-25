@@ -28,6 +28,6 @@ namespace Budgie
         Q_DECLARE_PRIVATE(Panel);
 
     private:
-        PanelPrivate *const d_ptr;
+        const QSharedPointer<PanelPrivate> d_ptr;
     };
 }
